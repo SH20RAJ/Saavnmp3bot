@@ -1,5 +1,5 @@
 {
-  "name": "telegram-bot",
+  "name": "saavnmp3_bot",
   "version": "1.0.0",
   "description": "A Telegram bot project",
   "main": "bot.js",
