@@ -1,18 +1,17 @@
 {
-  "name": "nodejs",
+  "name": "telegram-bot",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A Telegram bot project",
+  "main": "bot.js", // Replace "bot.js" with the entry point of your bot script
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node bot.js" // Replace "bot.js" with the entry point of your bot script
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Your Name",
+  "license": "MIT",
   "dependencies": {
-    "@types/node": "^18.0.6",
-    "axios": "^1.4.0",
-    "node-fetch": "^3.2.6",
-    "node-telegram-bot-api": "^0.61.0"
+    "node-telegram-bot-api": "^0.59.0",
+    "axios": "^0.22.0",
+    "express": "^4.17.1",
+    "body-parser": "^1.19.1"
   }
 }
