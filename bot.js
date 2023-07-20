@@ -1,8 +1,9 @@
 const TelegramBot = require('node-telegram-bot-api');
 const axios = require('axios');
 const fs = require('fs');
+const express = require('express');
 
-// Replace 'YOUR_TELEGRAM_BOT_TOKEN' with the token you provided
+// Replace '6190647327:AAFxS6-pwJldMaOtWmptqoFK9j5ABJd8KEs' with your actual Telegram bot token
 const botToken = '6190647327:AAFxS6-pwJldMaOtWmptqoFK9j5ABJd8KEs';
 
 // Create a new instance of the Telegram bot
@@ -121,3 +122,27 @@ Download Links: ${result.DownloadLinks.map(
     bot.sendMessage(chatId, 'An error occurred while searching for songs.');
   }
 });
+
+// Create an Express app to handle webhook requests from Telegram
+const app = express();
+
+// This endpoint will receive updates from Telegram
+app.post(`/bot${botToken}`, (req, res) => {
+  bot.processUpdate(req.body);
+  res.sendStatus(200);
+});
+
+// Start the Express app on a specified port
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Telegram File Sharing Bot is running on port ${PORT}`);
+});
+
+// Register the webhook with Telegram (run this once)
+const webhookUrl = 'https://saavnmp3bot.vercel.app/bot' + botToken;
+bot.setWebHook(webhookUrl).then(() => {
+  console.log(`Webhook set to: ${webhookUrl}`);
+}).catch((error) => {
+  console.error('Error setting webhook:', error.message);
+});
+  
