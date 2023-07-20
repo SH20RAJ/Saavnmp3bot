@@ -1,5 +1,6 @@
 const TelegramBot = require('node-telegram-bot-api');
 const axios = require('axios');
+const fs = require('fs');
 
 // Replace 'YOUR_TELEGRAM_BOT_TOKEN' with the token you provided
 const botToken = '6190647327:AAFxS6-pwJldMaOtWmptqoFK9j5ABJd8KEs';
@@ -7,9 +8,8 @@ const botToken = '6190647327:AAFxS6-pwJldMaOtWmptqoFK9j5ABJd8KEs';
 // Create a new instance of the Telegram bot
 const bot = new TelegramBot(botToken, { polling: true });
 
-
 async function searchSong(query) {
-  const apiUrl = `https://saavn.me/search/songs?query=${encodeURIComponent(query)}`;
+  const apiUrl = `https://saavn.me/search/songs?limit=5&query=${encodeURIComponent(query)}`;
   try {
     const response = await axios.get(apiUrl);
     const data = response.data;
@@ -81,8 +81,23 @@ Download Links: ${result.DownloadLinks.map(
         `;
 
         bot.sendPhoto(chatId, result.Image, { caption: responseText }).then(() => {
-          const downloadLink = result.DownloadLinks[result.DownloadLinks.length - 1].Link; // Get the highest quality link
-          bot.sendDocument(chatId, downloadLink, { caption: 'Download Link' });
+          const fileName = `${result.Song}.mp3`;
+          axios({
+            method: 'get',
+            url: result.DownloadLinks[result.DownloadLinks.length - 1].Link, // Download the highest quality
+            responseType: 'stream',
+          }).then((response) => {
+            response.data.pipe(fs.createWriteStream(fileName))
+              .on('finish', () => {
+                bot.sendDocument(chatId, fileName, { caption: 'Download Link' }).then(() => {
+                  fs.unlinkSync(fileName); // Delete the temporary file after sending
+                });
+              })
+              .on('error', (err) => {
+                console.error('Error downloading file:', err.message);
+                bot.sendMessage(chatId, 'An error occurred while downloading the file.');
+              });
+          });
         });
       });
     } else {
@@ -93,4 +108,4 @@ Download Links: ${result.DownloadLinks.map(
     bot.sendMessage(chatId, 'An error occurred while searching for songs.');
   }
 });
-
+       
