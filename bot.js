@@ -48,6 +48,26 @@ function convertDuration(durationInSeconds) {
   return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 }
 
+// Event listener for when the bot starts
+bot.on('polling_error', (error) => {
+  console.error('Polling error:', error.message);
+});
+
+bot.on('webhook_error', (error) => {
+  console.error('Webhook error:', error.message);
+});
+
+bot.onText(/\/start/, (msg) => {
+  const chatId = msg.chat.id;
+  const welcomeMessage = `
+Welcome to the Telegram bot!
+
+Send me the name of a song to get details about it.
+For example, send "Baarish Lete Aana" to get details about the song "Baarish Lete Aana".
+`;
+  bot.sendMessage(chatId, welcomeMessage);
+});
+
 // Event listener for incoming messages
 bot.on('message', async (msg) => {
   const chatId = msg.chat.id;
@@ -108,4 +128,4 @@ Download Links: ${result.DownloadLinks.map(
     bot.sendMessage(chatId, 'An error occurred while searching for songs.');
   }
 });
-       
+  
