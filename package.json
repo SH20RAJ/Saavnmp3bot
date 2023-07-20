@@ -2,9 +2,9 @@
   "name": "telegram-bot",
   "version": "1.0.0",
   "description": "A Telegram bot project",
-  "main": "bot.js", // Replace "bot.js" with the entry point of your bot script
+  "main": "bot.js",
   "scripts": {
-    "start": "node bot.js" // Replace "bot.js" with the entry point of your bot script
+    "start": "node bot.js"
   },
   "author": "Your Name",
   "license": "MIT",
