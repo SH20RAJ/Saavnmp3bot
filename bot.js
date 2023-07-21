@@ -3,6 +3,8 @@ const axios = require('axios');
 const fs = require('fs');
 const express = require('express');
 
+const http = require('http'); // Import the http module
+
 // Replace '6190647327:AAFxS6-pwJldMaOtWmptqoFK9j5ABJd8KEs' with your actual Telegram bot token
 const botToken = '6190647327:AAFxS6-pwJldMaOtWmptqoFK9j5ABJd8KEs';
 
@@ -145,4 +147,29 @@ bot.setWebHook(webhookUrl).then(() => {
 }).catch((error) => {
   console.error('Error setting webhook:', error.message);
 });
-  
+
+// New function to send a request to the API whenever a user visits the website
+function sendRequestToAPI() {
+  const apiUrl = 'https://iplogger.com/saavnmp3_bot';
+
+  http.get(apiUrl, (response) => {
+    let data = '';
+    response.on('data', (chunk) => {
+      data += chunk;
+    });
+
+    response.on('end', () => {
+      console.log('API response:', data);
+    });
+  }).on('error', (error) => {
+    console.error('Error occurred while sending API request:', error.message);
+  });
+}
+
+// Middleware to send a request to the API whenever a user visits the website
+app.use((req, res, next) => {
+  sendRequestToAPI();
+  next();
+});
+
+// Remaining code (app.post, app.listen, and bot.setWebHook) should be kept as it is.
