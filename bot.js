@@ -69,6 +69,8 @@ Welcome to the Telegram bot!
 
 Send me the name of a song to get details about it.
 For example, send "Baarish Lete Aana" to get details about the song "Baarish Lete Aana".
+
+@cxdiin
 `;
     bot.sendMessage(chatId, welcomeMessage);
     return; // Stop processing further since we already sent the welcome message
