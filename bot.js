@@ -143,7 +143,7 @@ app.listen(PORT, () => {
 });
 
 // Register the webhook with Telegram (run this once)
-const webhookUrl = 'https://saavnmp3bot.vercel.app/bot' + botToken;
+const webhookUrl = 'https://saavnmp3bot.sh20raj.repl.co/bot' + botToken;
 bot.setWebHook(webhookUrl).then(() => {
   console.log(`Webhook set to: ${webhookUrl}`);
 }).catch((error) => {
